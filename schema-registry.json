@@ -2,8 +2,19 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Azure Schema Registry",
+    "description": "Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.",
     "version": "0.1.9"
   },
+  "servers": [
+    {
+      "url": "http://api.example.com/v1",
+      "description": "Optional server description, e.g. Main (production) server"
+    },
+    {
+      "url": "http://staging-api.example.com",
+      "description": "Optional server description, e.g. Internal staging server for testing"
+    }
+  ],
   "paths": {
     "/$schemagroups": {
       "get": {
@@ -79,8 +90,7 @@
           }
         },
         "tags": [
-          "schemas",
-          "client-runtime"
+          "schemas"
         ]
       }
     },
@@ -218,6 +228,7 @@
       "post": {
         "summary": "Get schema GUID by schema content",
         "description": "Get GUID for schema with matching byte content and serialization format.",
+        "operationId": "getGuidBySchemaContent",
         "responses": {
           "200": {
             "description": "OK",
@@ -274,13 +285,13 @@
           }
         },
         "tags": [
-          "schemas",
-          "client-runtime"
+          "schemas"
         ]
       },
       "put": {
         "summary": "Create new schema",
         "description": "Create new schema. If schema of specified name does not exist in specified group, schema is created at version 1. If schema of specified name exists already in specified group, schema is created at latest version + 1.\n",
+        "operationId": "createSchema",
         "responses": {
           "200": {
             "description": "OK",
@@ -337,13 +348,13 @@
           }
         },
         "tags": [
-          "schemas",
-          "client-runtime"
+          "schemas"
         ]
       },
       "get": {
         "summary": "Get latest version of schema",
         "description": "Get latest version of schema.",
+        "operationId": "getLatestSchema",
         "responses": {
           "200": {
             "description": "OK",
@@ -402,6 +413,7 @@
       },
       "delete": {
         "summary": "Delete schema",
+        "operationId": "deleteSchema",
         "responses": {
           "204": {
             "description": "OK no content"
@@ -439,6 +451,7 @@
       "get": {
         "summary": "Get list of versions",
         "description": "Get list of versions for specified schema",
+        "operationId": "getSchemaVersions",
         "responses": {
           "200": {
             "description": "OK",
@@ -499,6 +512,7 @@
       ],
       "get": {
         "summary": "Get specified version of schema",
+        "operationId": "getSchemaVersion",
         "responses": {
           "200": {
             "description": "OK",
@@ -550,6 +564,7 @@
       },
       "delete": {
         "summary": "Delete specified version of schema",
+        "operationId": "deleteSchemaVersion",
         "responses": {
           "200": {
             "description": "OK"
