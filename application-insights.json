@@ -70,11 +70,6 @@
                 "$ref": "#/definitions/ExceptionData"
               }
             }
-          },
-          "x-ms-examples": {
-            "Find anomalies for the entire series in batch example": {
-              "$ref": "./examples/EntireDetect.json"
-            }
           }
         }
       }
