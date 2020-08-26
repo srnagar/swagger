@@ -129,7 +129,6 @@
                       },
                       "duration":  {
                           "type": "string",
-                          "format": "duration",
                           "description": "Duration in format: DD.HH:MM:SS.MMMMMM. Must be less than 1000 days."
                       },
                       "success":  {
@@ -521,7 +520,6 @@
                       },
                       "duration":  {
                           "type": "string",
-                          "format": "duration",
                           "description": "Request duration in format: DD.HH:MM:SS.MMMMMM. For a page view (PageViewData), this is the duration. For a page view with performance information (PageViewPerfData), this is the page load time. Must be less than 1000 days."
                       },
                       "referredUri":  {
@@ -586,32 +584,26 @@
                       },
                       "duration":  {
                           "type": "string",
-                          "format": "duration",
                           "description": "Request duration in format: DD.HH:MM:SS.MMMMMM. For a page view (PageViewData), this is the duration. For a page view with performance information (PageViewPerfData), this is the page load time. Must be less than 1000 days."
                       },
                       "perfTotal":  {
                           "type": "string",
-                          "format": "duration",
                           "description": "Performance total in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff"
                       },
                       "networkConnect":  {
                           "type": "string",
-                          "format": "duration",
                           "description": "Network connection time in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff"
                       },
                       "sentRequest":  {
                           "type": "string",
-                          "format": "duration",
                           "description": "Sent request time in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff"
                       },
                       "receivedResponse":  {
                           "type": "string",
-                          "format": "duration",
                           "description": "Received response time in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff"
                       },
                       "domProcessing":  {
                           "type": "string",
-                          "format": "duration",
                           "description": "DOM processing time in TimeSpan 'G' (general long) format: d:hh:mm:ss.fffffff"
                       },
                       "properties":  {
@@ -685,7 +677,6 @@
                       },
                       "duration":  {
                           "type": "string",
-                          "format": "duration",
                           "description": "Request duration in format: DD.HH:MM:SS.MMMMMM. Must be less than 1000 days."
                       },
                       "success":  {
@@ -748,7 +739,6 @@
                       },
                       "duration":  {
                           "type": "string",
-                          "format": "duration",
                           "description": "Request duration in format: DD.HH:MM:SS.MMMMMM. Must be less than 1000 days."
                       },
                       "success":  {
