@@ -84,12 +84,6 @@
                 "schema": {
                     "$ref": "#/definitions/TrackResponse"
                 }
-            },
-            "default": {
-              "description": "Error response.",
-              "schema": {
-                "$ref": "#/definitions/ExceptionData"
-              }
             }
           }
         }
@@ -113,6 +107,7 @@
                   "properties": {
                       "ver":  {
                           "type": "integer",
+                          "x-ms-client-name": "version",
                           "format": "int32",
                           "description": "Schema version",
                           "default": 2
@@ -183,6 +178,7 @@
           }
       },
       "DataPoint" : {
+        "x-ms-client-name": "MetricDataPoint",
           "type": "object",
           "description": "Metric data single measurement.",
           "required": [
@@ -191,6 +187,7 @@
           ],
           "properties": {
               "ns": {
+                  "x-ms-client-name": "namespace",
                   "type": "string",
                   "description": "Namespace of the metric.",
                   "maxLength": 256
@@ -201,6 +198,7 @@
                   "maxLength": 1024
               },
               "kind": {
+                  "x-ms-client-name": "dataPointType",
                   "$ref": "#/definitions/DataPointType",
                   "description": "Metric type. Single measurement or the aggregated value."
               },
@@ -255,6 +253,7 @@
           }
       },
       "EventData" : {
+        "x-ms-client-name": "TelemetryEventData",
           "allOf": [{
               "$ref": "#/definitions/Domain"
           },
@@ -267,6 +266,7 @@
               ],
               "properties": {
                   "ver":  {
+                      "x-ms-client-name": "version",
                       "type": "integer",
                       "format": "int32",
                       "description": "Schema version",
@@ -297,6 +297,7 @@
           }
       ]},
       "ExceptionData" : {
+          "x-ms-client-name": "TelemetryExceptionData",
           "allOf": [{
               "$ref": "#/definitions/Domain"
           },
@@ -309,6 +310,7 @@
               ],
               "properties": {
                   "ver":  {
+                      "x-ms-client-name": "version",
                       "type": "integer",
                       "format": "int32",
                       "description": "Schema version",
@@ -353,6 +355,7 @@
           }
       ]},
       "ExceptionDetails" : {
+          "x-ms-client-name": "TelemetryExceptionDetails",
           "type": "object",
           "description": "Exception details of the exception in a chain.",
           "required": [
@@ -412,6 +415,7 @@
               ],
               "properties": {
                   "ver":  {
+                    "x-ms-client-name": "version",
                       "type": "integer",
                       "format": "int32",
                       "description": "Schema version",
@@ -459,6 +463,7 @@
               "properties": {
                   "ver":  {
                       "type": "integer",
+                      "x-ms-client-name": "version",
                       "format": "int32",
                       "description": "Schema version",
                       "default": 2
@@ -495,6 +500,7 @@
                   ],
                   "properties": {
                       "ver":  {
+                          "x-ms-client-name": "version",
                           "type": "integer",
                           "format": "int32",
                           "description": "Schema version",
@@ -559,6 +565,7 @@
                   ],
                   "properties": {
                       "ver":  {
+                          "x-ms-client-name": "version",
                           "type": "integer",
                           "format": "int32",
                           "description": "Schema version",
@@ -638,6 +645,7 @@
                   "properties": {
                       "ver":  {
                           "type": "integer",
+                          "x-ms-client-name": "version",
                           "format": "int32",
                           "description": "Schema version",
                           "default": 2
@@ -720,6 +728,7 @@
                   "properties": {
                       "ver":  {
                           "type": "integer",
+                          "x-ms-client-name": "version",
                           "format": "int32",
                           "description": "Schema version",
                           "default": 2
@@ -880,6 +889,7 @@
           "properties": {
               "ver": {
                   "type": "number",
+                  "x-ms-client-name": "version",
                   "format": "int32",
                   "default": 1,
                   "description": "Envelope version. For internal use only. By assigning this the default, it will not be serialized within the payload unless changed to a value other than #1."
@@ -901,11 +911,13 @@
               },
               "seq": {
                   "type": "string",
+                  "x-ms-client-name": "sequence",
                   "maxLength": 64,
                   "description": "Sequence field used to track absolute order of uploaded events."
               },
               "iKey": {
                   "type": "string",
+                  "x-ms-client-name": "instrumentationKey",
                   "description": "The instrumentation key of the Application Insights resource."
               },
               "tags": {
