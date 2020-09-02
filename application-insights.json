@@ -148,7 +148,7 @@
                       },
                       "properties":  {
                           "type": "object",
-                          "description": "Collection of custom properties. TODO: max key length validate",
+                          "description": "Collection of custom properties.",
                           "additionalProperties": {
                               "type": "string",
                               "maxLength": 8192
@@ -156,7 +156,7 @@
                       },
                       "measurements":  {
                           "type": "object",
-                          "description": "Collection of custom measurements. TODO: max key length validate",
+                          "description": "Collection of custom measurements.",
                           "additionalProperties": {
                               "type": "number",
                               "format": "double"
@@ -168,6 +168,7 @@
           ]
       },
       "Base": {
+          "x-ms-client-name": "MonitorBase",
           "type": "object",
           "description": "Data struct to contain only C section with custom fields.",
           "properties": {
@@ -201,7 +202,7 @@
               },
               "kind": {
                   "$ref": "#/definitions/DataPointType",
-                  "description": "Metric type. Single measurement or the aggregated value. TODO: add default"
+                  "description": "Metric type. Single measurement or the aggregated value."
               },
               "value": {
                   "type": "number",
@@ -243,6 +244,7 @@
           ]
       },
       "Domain" : {
+          "x-ms-client-name": "MonitorDomain",
           "type": "object",
           "description": "The abstract common base of all domains.",
           "properties": {
@@ -251,11 +253,6 @@
                   "description": "Ignored value."
               }
           }
-      },
-      "Envelope" : {
-  
-          "type": "object",
-          "description": "The abstract common base of all domains."
       },
       "EventData" : {
           "allOf": [{
@@ -282,7 +279,7 @@
                   },
                   "properties":  {
                       "type": "object",
-                      "description": "Collection of custom properties. TODO: max key length validate",
+                      "description": "Collection of custom properties.",
                       "additionalProperties": {
                           "type": "string",
                           "maxLength": 8192
@@ -290,7 +287,7 @@
                   },
                   "measurements":  {
                       "type": "object",
-                      "description": "Collection of custom measurements. TODO: max key length validate",
+                      "description": "Collection of custom measurements.",
                       "additionalProperties": {
                           "type": "number",
                           "format": "double"
@@ -338,7 +335,7 @@
                   },
                   "properties":  {
                       "type": "object",
-                      "description": "Collection of custom properties. TODO: max key length validate",
+                      "description": "Collection of custom properties.",
                       "additionalProperties": {
                           "type": "string",
                           "maxLength": 8192
@@ -346,7 +343,7 @@
                   },
                   "measurements":  {
                       "type": "object",
-                      "description": "Collection of custom measurements. TODO: max key length validate",
+                      "description": "Collection of custom measurements.",
                       "additionalProperties": {
                           "type": "number",
                           "format": "double"
@@ -431,7 +428,7 @@
                   },
                   "properties":  {
                       "type": "object",
-                      "description": "Collection of custom properties. TODO: max key length validate",
+                      "description": "Collection of custom properties.",
                       "additionalProperties": {
                           "type": "string",
                           "maxLength": 8192
@@ -439,7 +436,7 @@
                   },
                   "measurements":  {
                       "type": "object",
-                      "description": "Collection of custom measurements. TODO: max key length validate",
+                      "description": "Collection of custom measurements.",
                       "additionalProperties": {
                           "type": "number",
                           "format": "double"
@@ -475,7 +472,7 @@
                   },
                   "properties":  {
                       "type": "object",
-                      "description": "Collection of custom properties. TODO: max key length validate",
+                      "description": "Collection of custom properties.",
                       "additionalProperties": {
                           "type": "string",
                           "maxLength": 8192
@@ -529,7 +526,7 @@
                       },
                       "properties":  {
                           "type": "object",
-                          "description": "Collection of custom properties. TODO: max key length validate",
+                          "description": "Collection of custom properties.",
                           "additionalProperties": {
                               "type": "string",
                               "maxLength": 8192
@@ -537,7 +534,7 @@
                       },
                       "measurements":  {
                           "type": "object",
-                          "description": "Collection of custom measurements. TODO: max key length validate",
+                          "description": "Collection of custom measurements.",
                           "additionalProperties": {
                               "type": "number",
                               "format": "double"
@@ -608,7 +605,7 @@
                       },
                       "properties":  {
                           "type": "object",
-                          "description": "Collection of custom properties. TODO: max key length validate",
+                          "description": "Collection of custom properties.",
                           "additionalProperties": {
                               "type": "string",
                               "maxLength": 8192
@@ -616,7 +613,7 @@
                       },
                       "measurements":  {
                           "type": "object",
-                          "description": "Collection of custom measurements. TODO: max key length validate",
+                          "description": "Collection of custom measurements.",
                           "additionalProperties": {
                               "type": "number",
                               "format": "double"
@@ -687,7 +684,7 @@
                       },
                       "properties":  {
                           "type": "object",
-                          "description": "Collection of custom properties. TODO: max key length validate",
+                          "description": "Collection of custom properties.",
                           "additionalProperties": {
                               "type": "string",
                               "maxLength": 8192
@@ -695,7 +692,7 @@
                       },
                       "measurements":  {
                           "type": "object",
-                          "description": "Collection of custom measurements. TODO: max key length validate",
+                          "description": "Collection of custom measurements.",
                           "additionalProperties": {
                               "type": "number",
                               "format": "double"
@@ -763,7 +760,7 @@
                       },
                       "properties":  {
                           "type": "object",
-                          "description": "Collection of custom properties. TODO: max key length validate",
+                          "description": "Collection of custom properties.",
                           "additionalProperties": {
                               "type": "string",
                               "maxLength": 8192
@@ -771,7 +768,7 @@
                       },
                       "measurements":  {
                           "type": "object",
-                          "description": "Collection of custom measurements. TODO: max key length validate",
+                          "description": "Collection of custom measurements.",
                           "additionalProperties": {
                               "type": "number",
                               "format": "double"
@@ -852,6 +849,7 @@
           }
       },
       "ErrorDetails": {
+          "x-ms-client-name": "TelemetryErrorDetails",
           "description": "The error details",
           "type": "object",
           "properties": {
@@ -872,6 +870,7 @@
           }
       },
       "TelemetryEnvelope": {
+          "x-ms-client-name": "TelemetryItem",
           "description": "System variables for a telemetry item.",
           "type": "object",
           "required": [
