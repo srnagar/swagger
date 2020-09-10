@@ -1,579 +1,330 @@
 {
-  "openapi": "3.0.0",
+  "swagger": "2.0",
   "info": {
     "title": "Azure Schema Registry",
-    "description": "Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.",
-    "version": "0.1.9"
+    "version": "2020-09-01-preview",
+    "description": "Azure Schema Registry is as a central schema repository for enterprise-level data infrastructure, complete with support for versioning and management."
   },
-  "servers": [
-    {
-      "url": "http://api.example.com/v1",
-      "description": "Optional server description, e.g. Main (production) server"
-    },
-    {
-      "url": "http://staging-api.example.com",
-      "description": "Optional server description, e.g. Internal staging server for testing"
-    }
+  "x-ms-parameterized-host": {
+    "hostTemplate": "{endpoint}",
+    "useSchemePrefix": true,
+    "parameters": [
+      {
+        "$ref": "#/parameters/Endpoint"
+      }
+    ]
+  },
+  "schemes": [
+    "https"
   ],
+  "securityDefinitions": {
+    "azure_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "https://login.microsoftonline.com/common/oauth2/authorize",
+      "flow": "implicit",
+      "description": "Azure Active Directory OAuth2 Flow",
+      "scopes": {
+        "user_impersonation": "impersonate your user account"
+      }
+    }
+  },
   "paths": {
-    "/$schemagroups": {
+    "/$schemagroups/getSchemaById/{schema-id}": {
       "get": {
-        "summary": "Get list of schema groups",
-        "description": "Get all schema groups in namespace.",
-        "operationId": "getGroups",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+        "summary": "Get a registered schema by its unique ID reference.",
+        "description": "Gets a registered schema by its unique ID.  Azure Schema Registry guarantees that ID is unique within a namespace.",
+        "x-ms-examples": {
+          "Get schema by ID": {
+            "$ref": "./examples/OperationSchema_GetById.json"
           }
         },
-        "tags": [
-          "groups"
-        ]
-      }
-    },
-    "/$schemagroups/getSchemaById": {
-      "get": {
-        "summary": "Get schema by GUID",
-        "description": "Get schema by GUID.  Azure Schema Registry guarantees that GUID within a namespace.",
-        "operationId": "getSchemaById",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Serialization": {
-                "schema": {
-                  "type": "string"
-                },
-                "description": "schema type"
-              },
-              "X-Schema-Id": {
-                "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "description": "unique schema identifier"
-              },
-              "X-Schema-Id-Location": {
-                "schema": {
-                  "type": "string",
-                  "format": "url"
-                },
-                "description": "location of schema resource"
-              },
-              "X-Schema-Version": {
-                "schema": {
-                  "type": "integer"
-                },
-                "description": "version of returned schema"
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Schema with matching GUID not found"
-          }
-        },
-        "tags": [
-          "schemas"
-        ]
-      }
-    },
-    "/$schemagroups/{group-name}": {
-      "parameters": [
-        {
-          "name": "group-name",
-          "in": "path",
-          "description": "schema group name",
-          "required": true,
-          "schema": {
+        "operationId": "Schema_GetById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "schema-id",
+            "in": "path",
+            "description": "References specific schema in registry namespace.",
+            "required": true,
             "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
           }
-        }
-      ],
-      "put": {
-        "summary": "Create schema group",
-        "description": "Create schema group in schema registry namespace.",
-        "operationId": "createGroup",
+        ],
         "responses": {
-          "201": {
-            "description": "Created",
+          "200": {
+            "description": "OK",
             "headers": {
               "Location": {
-                "schema": {
-                  "type": "string"
-                }
+                "type": "string",
+                "description": "URL location of schema, identified by schema group, schema name, and version."
+              },
+              "X-Schema-Type": {
+                "type": "string",
+                "description": "Serialization type for the schema being stored."
+              },
+              "X-Schema-Id": {
+                "type": "string",
+                "description": "References specific schema in registry namespace."
+              },
+              "X-Schema-Id-Location": {
+                "type": "string",
+                "description": "URL location of schema, identified by schema ID."
+              },
+              "X-Schema-Version": {
+                "type": "integer",
+                "description": "Version of the returned schema."
               }
+            },
+            "schema": {
+              "type": "string"
             }
           },
-          "409": {
-            "description": "Schema group already exists"
-          }
-        },
-        "tags": [
-          "groups"
-        ]
-      },
-      "delete": {
-        "summary": "Delete schema group",
-        "description": "Delete schema group in schema registry namespace.",
-        "operationId": "deleteGroup",
-        "responses": {
-          "204": {
-            "description": "OK no content"
-          },
-          "404": {
-            "description": "Specified group not found"
-          }
-        },
-        "tags": [
-          "groups"
-        ]
-      }
-    },
-    "/$schemagroups/{group-name}/schemas": {
-      "parameters": [
-        {
-          "name": "group-name",
-          "in": "path",
-          "description": "schema group",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "tags": [
-          "groups"
-        ],
-        "summary": "Get schemas for group name",
-        "description": "Returns schema by group name.",
-        "operationId": "getSchemasByGroup",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
+          "default": {
+            "description": "An error response received from the Azure Schema Registry service.",
+            "schema": {
+              "$ref": "#/definitions/ServiceErrorResponse"
             }
-          },
-          "404": {
-            "description": "Group not found"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "groups"
-        ],
-        "summary": "Deletes all schemas in group",
-        "description": "Deletes all schemas under specified group name.",
-        "operationId": "deleteSchemasByGroup",
-        "responses": {
-          "204": {
-            "description": "OK no content"
-          },
-          "400": {
-            "description": "Invalid group supplied"
-          },
-          "404": {
-            "description": "Group not found"
           }
         }
       }
     },
     "/$schemagroups/{group-name}/schemas/{schema-name}": {
-      "parameters": [
-        {
-          "name": "group-name",
-          "in": "path",
-          "description": "schema group",
-          "required": true,
-          "schema": {
-            "type": "string"
+      "post": {
+        "summary": "Get ID for existing schema.",
+        "description": "Gets the ID referencing an existing schema within the specified schema group, as matched by schema content comparison.",
+        "x-ms-examples": {
+          "Get schema ID": {
+            "$ref": "./examples/OperationSchema_QueryIdByContent.json"
           }
         },
-        {
-          "name": "schema-name",
-          "in": "path",
-          "description": "schema name",
-          "required": true,
-          "schema": {
+        "operationId": "Schema_QueryIdByContent",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "group-name",
+            "in": "path",
+            "description": "Schema group under which schema is registered.  Group's serialization type should match the serialization type specified in the request.",
+            "required": true,
             "type": "string"
+          },
+          {
+            "name": "schema-name",
+            "in": "path",
+            "description": "Name of the registered schema.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "schema-content",
+            "in": "body",
+            "description": "String representation of the registered schema.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Schema-Type",
+            "in": "header",
+            "type": "string",
+            "description": "Serialization type for the schema being registered.",
+            "required": true,
+            "enum": [
+              "avro"
+            ],
+            "x-ms-enum": {
+              "name": "SerializationType",
+              "modelAsString": true,
+              "values": [
+                {
+                  "value": "avro",
+                  "name": "AVRO",
+                  "description": "Avro Serialization schema type"
+                }
+              ]
+            },
+            "x-nullable": false
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
           }
-        }
-      ],
-      "post": {
-        "summary": "Get schema GUID by schema content",
-        "description": "Get GUID for schema with matching byte content and serialization format.",
-        "operationId": "getGuidBySchemaContent",
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "headers": {
               "Location": {
-                "schema": {
-                  "type": "string"
-                }
+                "type": "string",
+                "description": "URL location of schema, identified by schema group, schema name, and version."
               },
-              "X-Serialization": {
-                "schema": {
-                  "type": "string"
-                },
-                "description": "schema type"
+              "X-Schema-Type": {
+                "type": "string",
+                "description": "Serialization type for the schema being stored."
               },
               "X-Schema-Id": {
-                "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "description": "unique schema identifier"
+                "type": "string",
+                "description": "References specific schema in registry namespace."
               },
               "X-Schema-Id-Location": {
-                "schema": {
-                  "type": "string",
-                  "format": "url"
-                },
-                "description": "location of schema resource"
+                "type": "string",
+                "description": "URL location of schema, identified by schema ID."
               },
               "X-Schema-Version": {
-                "schema": {
-                  "type": "integer"
-                },
-                "description": "version of returned schema"
+                "type": "integer",
+                "description": "Version of the returned schema."
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "format": "uuid",
-                      "description": "schema GUID"
-                    }
-                  }
-                }
-              }
+            "schema": {
+              "$ref": "#/definitions/SchemaId"
             }
           },
-          "404": {
-            "description": "Matching schema not found"
+          "default": {
+            "description": "An error response received from the Azure Schema Registry service.",
+            "schema": {
+              "$ref": "#/definitions/ServiceErrorResponse"
+            }
           }
-        },
-        "tags": [
-          "schemas"
-        ]
+        }
       },
       "put": {
-        "summary": "Create new schema",
-        "description": "Create new schema. If schema of specified name does not exist in specified group, schema is created at version 1. If schema of specified name exists already in specified group, schema is created at latest version + 1.\n",
-        "operationId": "createSchema",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "Location": {
-                "schema": {
-                  "type": "string"
+        "summary": "Register new schema",
+        "description": "Register new schema. If schema of specified name does not exist in specified group, schema is created at version 1. If schema of specified name exists already in specified group, schema is created at latest version + 1.\n",
+        "x-ms-examples": {
+          "Register schema": {
+            "$ref": "./examples/OperationSchema_Register.json"
+          }
+        },
+        "operationId": "Schema_Register",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "group-name",
+            "in": "path",
+            "description": "Schema group under which schema should be registered.  Group's serialization type should match the serialization type specified in the request.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "schema-name",
+            "in": "path",
+            "description": "Name of schema being registered.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "X-Schema-Type",
+            "in": "header",
+            "type": "string",
+            "description": "Serialization type for the schema being registered.",
+            "required": true,
+            "enum": [
+              "avro"
+            ],
+            "x-ms-enum": {
+              "name": "SerializationType",
+              "modelAsString": true,
+              "values": [
+                {
+                  "value": "avro",
+                  "name": "AVRO",
+                  "description": "Avro Serialization schema type"
                 }
-              },
-              "X-Serialization": {
-                "schema": {
-                  "type": "string"
-                },
-                "description": "schema type"
-              },
-              "X-Schema-Id": {
-                "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "description": "unique schema identifier"
-              },
-              "X-Schema-Id-Location": {
-                "schema": {
-                  "type": "string",
-                  "format": "url"
-                },
-                "description": "location of schema resource"
-              },
-              "X-Schema-Version": {
-                "schema": {
-                  "type": "integer"
-                },
-                "description": "version of returned schema"
-              }
+              ]
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "format": "uuid",
-                      "description": "schema GUID"
-                    }
-                  }
-                }
-              }
+            "x-nullable": false
+          },
+          {
+            "name": "schema-content",
+            "in": "body",
+            "description": "String representation of the schema being registered.",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           },
-          "400": {
-            "description": "Invalid request"
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
           }
-        },
-        "tags": [
-          "schemas"
-        ]
-      },
-      "get": {
-        "summary": "Get latest version of schema",
-        "description": "Get latest version of schema.",
-        "operationId": "getLatestSchema",
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "headers": {
               "Location": {
-                "schema": {
-                  "type": "string"
-                }
+                "type": "string",
+                "description": "URL location of schema, identified by schema group, schema name, and version."
               },
-              "X-Serialization": {
-                "schema": {
-                  "type": "string"
-                },
-                "description": "schema type"
+              "X-Schema-Type": {
+                "type": "string",
+                "description": "Serialization type for the schema being registered."
               },
               "X-Schema-Id": {
-                "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "description": "unique schema identifier"
+                "type": "string",
+                "description": "References specific schema in registry namespace."
               },
               "X-Schema-Id-Location": {
-                "schema": {
-                  "type": "string",
-                  "format": "url"
-                },
-                "description": "location of schema resource"
+                "type": "string",
+                "description": "URL location of schema, identified by schema ID."
               },
               "X-Schema-Version": {
-                "schema": {
-                  "type": "integer"
-                },
-                "description": "version of returned schema"
+                "type": "integer",
+                "description": "Version of the returned schema."
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "format": "uuid",
-                      "description": "schema GUID"
-                    }
-                  }
-                }
-              }
+            "schema": {
+              "$ref": "#/definitions/SchemaId"
             }
-          }
-        },
-        "tags": [
-          "schemas"
-        ]
-      },
-      "delete": {
-        "summary": "Delete schema",
-        "operationId": "deleteSchema",
-        "responses": {
-          "204": {
-            "description": "OK no content"
           },
-          "404": {
-            "description": "Matching schema not found"
-          }
-        },
-        "tags": [
-          "schemas"
-        ]
-      }
-    },
-    "/$schemagroups/{group-name}/schemas/{schema-name}/versions": {
-      "parameters": [
-        {
-          "name": "group-name",
-          "in": "path",
-          "description": "schema group",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "schema-name",
-          "in": "path",
-          "description": "schema name",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "Get list of versions",
-        "description": "Get list of versions for specified schema",
-        "operationId": "getSchemaVersions",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Serialization": {
-                "schema": {
-                  "type": "string"
-                },
-                "description": "schema type"
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "integer"
-                  }
-                }
-              }
+          "default": {
+            "description": "An error response received from the Azure Schema Registry service.",
+            "schema": {
+              "$ref": "#/definitions/ServiceErrorResponse"
             }
           }
-        },
-        "tags": [
-          "schemas"
-        ]
+        }
+      }
+    }
+  },
+  "definitions": {
+    "SchemaId": {
+      "type": "object",
+      "description": "JSON Object received from the registry containing schema identifiers.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Schema ID that uniquely identifies a schema in the registry namespace."
+        }
       }
     },
-    "/$schemagroups/{group-name}/schemas/{schema-name}/versions/{version-number}": {
-      "parameters": [
-        {
-          "name": "group-name",
-          "in": "path",
-          "description": "schema group",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "schema-name",
-          "in": "path",
-          "description": "schema name",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "version-number",
-          "in": "path",
-          "description": "version number",
-          "required": true,
-          "schema": {
-            "type": "integer"
-          }
-        }
-      ],
-      "get": {
-        "summary": "Get specified version of schema",
-        "operationId": "getSchemaVersion",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "Location": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "X-Serialization": {
-                "schema": {
-                  "type": "string"
-                },
-                "description": "schema type"
-              },
-              "X-Schema-Id": {
-                "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "description": "unique schema identifier"
-              },
-              "X-Schema-Id-Location": {
-                "schema": {
-                  "type": "string",
-                  "format": "url"
-                },
-                "description": "location of schema resource"
-              },
-              "X-Schema-Version": {
-                "schema": {
-                  "type": "integer"
-                },
-                "description": "version of returned schema"
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "schemas"
-        ]
-      },
-      "delete": {
-        "summary": "Delete specified version of schema",
-        "operationId": "deleteSchemaVersion",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "tags": [
-          "schemas"
-        ]
-      }
+    "ServiceErrorResponse": {
+      "description": "Error response returned from Azure Schema Registry service.",
+      "type": "object"
+    }
+  },
+  "parameters": {
+    "ApiVersionParameter": {
+      "name": "api-version",
+      "in": "query",
+      "required": true,
+      "type": "string",
+      "description": "Schema Registry service API version that should be used."
+    },
+    "Endpoint": {
+      "name": "endpoint",
+      "description": "The Schema Registry service endpoint, for example my-namespace.servicebus.windows.net.",
+      "required": true,
+      "type": "string",
+      "in": "path",
+      "x-ms-skip-url-encoding": true,
+      "x-ms-parameter-location": "client"
     }
   }
 }
