@@ -391,9 +391,7 @@
           "description": "Inner error details if they exist.",
           "$ref": "#/definitions/errorInfo"
         },
-        "additionalProperties": {
-          "type": "object"
-        }
+        
       },
       "required": [
         "code",
