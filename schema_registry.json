@@ -366,9 +366,8 @@
       "required": [
         "error"
       ]
-    }
-  },
-  "errorInfo": {
+    },
+    "errorInfo": {
       "title": "The code and message for an error.",
       "type": "object",
       "properties": {
@@ -397,7 +396,9 @@
         "code",
         "message"
       ]
-    },
+    }
+  },
+  
   "parameters": {
     "ApiVersionParameter": {
       "name": "api-version",
