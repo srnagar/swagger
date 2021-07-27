@@ -355,7 +355,7 @@
     },
     "ServiceErrorResponse": {
       "description": "Error response returned from Azure Schema Registry service.",
-      "type": "string"
+      "type": "object"
     }
   },
   "parameters": {
