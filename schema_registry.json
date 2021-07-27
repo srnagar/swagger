@@ -357,7 +357,10 @@
       "description": "Error response returned from Azure Schema Registry service.",
       "type": "object",
       "properties": {
-        
+        "id": {
+          "type": "string",
+          "description": "Schema ID that uniquely identifies a schema in the registry namespace."
+        }
       }
     }
   },
