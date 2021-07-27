@@ -389,7 +389,7 @@
         "innererror": {
           "description": "Inner error details if they exist.",
           "$ref": "#/definitions/errorInfo"
-        },
+        }
         
       },
       "required": [
