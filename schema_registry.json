@@ -379,7 +379,6 @@
           "description": "A human readable error message.",
           "type": "string"
         },
-        
         "innererror": {
           "description": "Inner error details if they exist.",
           "$ref": "#/definitions/errorInfo"
